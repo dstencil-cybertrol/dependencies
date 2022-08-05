@@ -1,5 +1,5 @@
 apiVersion: v2
-name: k8s-dependencies
+name: dependencies
 version: "0.0.2"
 description: Helm chart for common k8s dependencies.
 type: application
