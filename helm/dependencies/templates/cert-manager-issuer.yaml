@@ -1,0 +1,45 @@
+{{ if .Values.cert-manager.issuer.enabled }}
+apiVersion: cert-manager.io/v1
+kind: {{ .Values.cert-manager.issuer.kind }}
+metadata:
+  name: "cert-manager"
+  {{- if ne .Values.cert-manager.issuer.namespaceOverride "" }}
+  namespace: {{ .Values.cert-manager.issuer.namespaceOverride | quote }}
+  {{- else }}
+  namespace: {{ .Values.cert-manager.namespace | quote }}
+  {{- end }}
+spec:
+  acme:
+    email: {{ .Values.cert-manager.issuer.email }}
+    server: {{ .Values.cert-manager.issuer.acmeServer }}
+    {{- if ne .Values.cert-manager.issuer.acmeExternalAccountKeyId "" }}
+    externalAccountBinding:
+      keyID: {{ .Values.cert-manager.issuer.acmeExternalAccountKeyId }} 
+      keySecretRef:
+        name: cert-manager-external-account-key
+        key: acme_external_account_key
+    {{- end }}
+    privateKeySecretRef:
+      name: acme-private-key
+    solvers:
+      - selector: {}
+        dns01:
+          {{- if eq .Values.cert-manager.issuer.dnsProvider "route53" }}
+          route53:
+            region: {{ .Values.cert-manager.issuer.route53Region }}
+            accessKeyID: {{ .Values.cert-manager.issuer.route53AccessKeyId }}
+            secretAccessKeySecretRef:
+              name: cert-manager-dns01-key
+              key: secret_access_key
+            {{- if ne .Values.cert-manager.issuer.route53HostedZoneId "" }}
+            hostedZoneID: {{ .Values.cert-manager.issuer.route53HostedZoneId }}
+            {{- end }}
+          {{- end }}
+          {{- if eq .Values.cert-manager.issuer.dnsProvider "cloudflare" }}
+          cloudflare:
+            email: {{ .Values.cert-manager.issuer.email }}
+            apiTokenSecretRef:
+              name: cert-manager-dns01-key
+              key: secret_access_key
+          {{- end }}
+{{- end }}

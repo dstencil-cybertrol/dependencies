@@ -1,0 +1,29 @@
+{{- if and .Values.ingress-nginx.enabled .Values.ingress-nginx.ingressService.enabled }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ingress
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress
+  namespace: ingress
+  annotations:
+    metallb.universe.tf/allow-shared-ip: {{ .Values.ingress-nginx.ingressService.ipAddress | quote }}
+spec:
+  selector:
+    {{ .Values.ingress-nginx.ingressService.selector | nindent 4 }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 443
+  type: LoadBalancer
+  loadBalancerIP: {{ .Values.ingress-nginx.ingressService.ipAddress | quote }}
+{{- end }}

@@ -1,0 +1,141 @@
+cert-manager:
+  enabled: true
+  namespace: cert-manager
+  installCRDs: true
+  # Example configuration to specify recursive nameservers only.
+  # extraArgs:
+  # - --dns01-recursive-nameservers-only
+  # - --dns01-recursive-nameservers=1.1.1.1:53,8.8.8.8:53
+  issuer:
+    # Note: for the issuer to be created sealed-secrets is also required.
+    # certManager (https://cert-manager.io/docs/) is required for tls certificates. 
+    enabled: false
+    name: cert-manager
+    namespaceOverride: cert-manager
+    kind: ClusterIssuer
+    secrets:
+      dnsSecretAccessKey: ""
+      acmeExternalAccountKey: ""
+    email: ""
+    # LetsEncrypt ACME staging is used by default. To use for production, change the url to:
+    # https://acme-v02.api.letsencrypt.org/directory
+    # For ZeroSSL, change the URL to https://acme.zerossl.com/v2/DV90
+    acmeServer: https://acme-staging-v02.api.letsencrypt.org/directory
+    acmeExternalAccountKeyId: ""
+    # DNS providers currently supported include "route53" and "cloudflare".
+    dnsProvider: route53
+    route53Region: us-east-1
+    route53HostedZoneId: ""
+    route53AccessKeyId: ""
+
+cilium:
+  enabled: false
+  ipam.mode: kubernetes
+  kubeProxyReplacement: strict
+  k8sServiceHost: 10.111.111.13
+  k8sServicePort: 6443
+  ipMasqAgent:
+    enabled: true
+  nonMasqueradeCIDRs: []
+  hostServices:
+    enabled: true
+  loadbalancer.mode: dsr
+  l7Proxy: true
+  installIptablesRules: true
+  cgroup:
+    autoMount:
+      enabled: false
+    hostRoot: /sys/fs/cgroup
+  enableIPv4Masquerade: true
+  #ipv4NativeRoutingCIDR: 0.0.0.0/32
+  bpf:
+    masqerade: true
+  hubble:
+    host: "" # hubble.example.com
+    enabled: true
+    metrics:
+      enabled:
+        - flow
+    ui:
+      enabled: true
+    relay:
+      enabled: true
+
+coredns:
+  enabled: true
+  deployment:
+  name: coredns
+  service:
+    clusterIP: 100.65.0.10
+  replicaCount: 3
+  servers:
+  - zones:
+    - zone: .
+    port: 53
+    plugins:
+    - name: errors
+    - name: health
+      configBlock: |-
+        lameduck 5s
+    - name: ready
+    - name: kubernetes
+      parameters: cluster.local in-addr.arpa ip6.arpa
+      configBlock: |-
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+        ttl 30
+    - name: prometheus
+      parameters: 0.0.0.0:9153
+    - name: forward
+      parameters: . 1.1.1.1 8.8.8.8
+    - name: cache
+      parameters: 30
+    - name: loop
+    - name: reload
+    - name: loadbalance
+  # - zones:
+  #   - zone: example.com
+  #     use_tcp: true
+  #   port: 53
+  #   plugins:
+  #   - name: forward
+  #     parameters: . 192.0.2.2 192.0.2.3
+ingress-nginx:
+  enabled: true
+  controller:
+    kind: DaemonSet
+    ingressClassResource:
+      default: true
+    # This is used because the same is added on nginx with microk8s when installing with 'microk8s enable ingress'
+    ingressClass: "public"
+    updateStrategy:
+      rollingUpdate:
+        maxUnavailable: 1
+      type: RollingUpdate
+    service:
+      enabled: false
+  ingressService:
+    enabled: true
+    ipAddress: "" # i.e. 192.0.2.20
+    selector: "app.kubernetes.io/name: ingress-nginx"
+
+longhorn:
+  enabled: true
+  namespaceOverride: "longhorn-system"
+
+metallb:
+  enabled: true
+  namespace: metallb-system
+  addresses: []
+  # - 192.0.2.0/24
+
+sealed-secrets:
+  enabled: true
+
+system-upgrade-controller:
+  enabled: true
+  k3s:
+    enabled: true
+    version: v1.23.8+k3s2
+  ubuntu:
+    enabled: true

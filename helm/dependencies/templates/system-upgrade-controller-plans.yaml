@@ -1,0 +1,72 @@
+{{- if .Values.system-upgrade-controller.k3s.enabled }}
+---
+# K3s upgrade plan
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+metadata:
+  name: k3s-server
+  namespace: system-upgrade
+  labels:
+    k3s-upgrade: server
+spec:
+  concurrency: 1 # Batch size (roughly maps to maximum number of unschedulable nodes)
+  version: {{ .Values.system-upgrade-controller.k3s.version }}
+  # channel: https://update.k3s.io/v1-release/channels/stable
+  nodeSelector:
+    matchExpressions:
+      - key: node-role.kubernetes.io/master
+        operator: In
+        values:
+        - "true"
+  serviceAccountName: system-upgrade
+  cordon: true
+  upgrade:
+    image: rancher/k3s-upgrade
+
+{{- if .Values.system-upgrade-controller.ubuntu.enabled }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ubuntu-plan
+  namespace: system-upgrade
+type: Opaque
+stringData:
+  upgrade.sh: |
+    #!/bin/sh
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+    secrets=$(dirname $0)
+    apt-get --assume-yes update
+    apt-get --assume-yes upgrade
+    if [ -f /run/reboot-required ]; then
+      cat /run/reboot-required
+      reboot
+    fi
+---
+apiVersion: upgrade.cattle.io/v1
+kind: Plan
+metadata:
+  name: jammy
+  namespace: system-upgrade
+spec:
+  concurrency: 1
+  nodeSelector:
+    matchExpressions:
+      - key: node-role.kubernetes.io/master
+        operator: In
+        values:
+        - "true"
+  serviceAccountName: system-upgrade
+  secrets:
+    - name: ubuntu-plan
+      path: /host/run/system-upgrade/secrets/ubuntu-plan
+  drain:
+    force: true
+    ignoreDaemonSets: true
+  version: jammy
+  upgrade:
+    image: ubuntu
+    command: ["chroot", "/host"]
+    args: ["sh", "/run/system-upgrade/secrets/ubuntu-plan/upgrade.sh"]
+{{- end }}

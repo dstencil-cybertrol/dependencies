@@ -1,0 +1,118 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: cilium
+  namespace: flux-system
+spec:
+  interval: 1h0m0s
+  url: https://helm.cilium.io
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cilium
+  namespace: flux-system
+spec:
+  releaseName: cilium
+  chart:
+    spec:
+      chart: cilium
+      sourceRef:
+        kind: HelmRepository
+        name: cilium
+      version: '=1.12.0'
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+    createNamespace: true
+  interval: 1h0m0s
+  targetNamespace: kube-system
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+  values:
+    ipam:
+      mode: kubernetes
+    kubeProxyReplacement: strict
+    k8sServiceHost: 127.0.0.1
+    k8sServicePort: 6443
+    ipMasqAgent:
+      enabled: true
+    nonMasqueradeCIDRs: []
+    loadbalancer.mode: dsr
+    l7Proxy: false
+    installIptablesRules: false
+    # cgroup:
+    #   autoMount:
+    #     enabled: false
+    #   hostRoot: /sys/fs/cgroup
+    enableIPv4Masquerade: true
+    bpf:
+      masquerade: true
+    hubble:
+      enabled: true
+      metrics:
+        enabled:
+          - flow
+          - dns
+          - tcp
+          - icmp
+          - http
+          - drop
+      ui:
+        enabled: true
+      relay:
+        enabled: true
+{{- if .Values.cilium.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ip-masq-agent
+  namespace: kube-system
+data:
+  config: |
+    nonMasqueradeCIDRs:
+    - 100.64.0.0/16
+    - 100.65.0.0/16
+    masqLinkLocal: false
+{{- end }}
+{{- if .Values.cilium.hubble.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hubble
+  namespace: kube-system
+  annotations:
+    kubernetes.io/ingress.class: "public"
+    nginx.ingress.kubernetes.io/affinity: cookie
+    nginx.ingress.kubernetes.io/session-cookie-name: hubble
+    nginx.ingress.kubernetes.io/affinity-mode: persistent
+    nginx.ingress.kubernetes.io/session-cookie-samesite: Strict
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "36000"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "36000"
+    nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
+    cert-manager.io/cluster-issuer: cert-manager
+spec:
+  rules:
+    - host: hubble.merit.cybertrol.app
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hubble-ui
+                port:
+                  number: 80
+  tls:
+    - hosts:
+      - hubble.merit.cybertrol.app
+      secretName: hubble-tls
+{{- end }}
