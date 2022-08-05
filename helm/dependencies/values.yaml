@@ -11,7 +11,7 @@ cert-manager:
     # certManager (https://cert-manager.io/docs/) is required for tls certificates. 
     enabled: false
     name: cert-manager
-    namespaceOverride: cert-manager
+    namespaceOverride: ""
     kind: ClusterIssuer
     secrets:
       dnsSecretAccessKey: ""
