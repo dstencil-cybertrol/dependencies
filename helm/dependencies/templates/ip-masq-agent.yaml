@@ -1,0 +1,14 @@
+{{- if .Values.cilium.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ip-masq-agent
+  namespace: kube-system
+data:
+  config: |
+    nonMasqueradeCIDRs:
+    - 100.64.0.0/16
+    - 100.65.0.0/16
+    masqLinkLocal: false
+{{- end }}
