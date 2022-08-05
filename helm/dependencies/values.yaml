@@ -103,6 +103,10 @@ coredns:
   #   plugins:
   #   - name: forward
   #     parameters: . 192.0.2.2 192.0.2.3
+
+flux:
+  enabled: true
+
 ingress-nginx:
   enabled: true
   controller:
