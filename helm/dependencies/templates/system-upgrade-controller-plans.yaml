@@ -22,7 +22,7 @@ spec:
   cordon: true
   upgrade:
     image: rancher/k3s-upgrade
-
+{{- end }}
 {{- if index .Values "system-upgrade-controller" "ubuntu" "enabled" }}
 ---
 apiVersion: v1
