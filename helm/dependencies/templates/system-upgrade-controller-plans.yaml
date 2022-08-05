@@ -1,4 +1,4 @@
-{{- if .Values.system-upgrade-controller.k3s.enabled }}
+{{- if index .Values "system-upgrade-controller" "k3s" "enabled" }}
 ---
 # K3s upgrade plan
 apiVersion: upgrade.cattle.io/v1
@@ -23,7 +23,7 @@ spec:
   upgrade:
     image: rancher/k3s-upgrade
 
-{{- if .Values.system-upgrade-controller.ubuntu.enabled }}
+{{- if index .Values "system-upgrade-controller" "ubuntu" "enabled" }}
 ---
 apiVersion: v1
 kind: Secret
