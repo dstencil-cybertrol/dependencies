@@ -3,9 +3,9 @@ name: k8s-dependencies
 version: "0.0.1-alpha.1"
 description: Helm chart for common k8s dependencies.
 type: application
-home: https://github.com/cybertrol-engineering/k8s-dependencies
+home: https://github.com/cybertrol-engineering/dependencies
 sources:
-  - https://github.com/cybertrol-engineering/k8s-dependencies
+  - https://github.com/cybertrol-engineering/dependencies
 maintainers:
   - name: alphabet5
     url: https://github.com/alphabet5
