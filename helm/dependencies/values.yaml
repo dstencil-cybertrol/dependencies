@@ -65,6 +65,7 @@ cilium:
       enabled: false
 
 coredns:
+  fullnameOverride: coredns
   enabled: true
   deployment:
   name: coredns
@@ -142,6 +143,8 @@ metallb:
 
 sealed-secrets:
   enabled: true
+  fullnameOverride: sealed-secrets
+  namespace: sealed-secrets
 
 system-upgrade-controller:
   enabled: false
