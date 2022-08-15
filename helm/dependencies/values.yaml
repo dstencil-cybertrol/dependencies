@@ -48,7 +48,7 @@ cilium:
     # hostRoot: /sys/fs/cgroup
   enableIPv4Masquerade: true
   bpf:
-    masqerade: true
+    masquerade: true
   hubble:
     enabled: false
     metrics:
