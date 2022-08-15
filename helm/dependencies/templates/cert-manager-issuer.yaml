@@ -1,4 +1,4 @@
-{{ if index .Values "cert-manager" "issuer" "enabled" }}
+{{- if index .Values "cert-manager" "issuer" "enabled" }}
 apiVersion: cert-manager.io/v1
 kind: {{ index .Values "cert-manager" "issuer" "kind" }}
 metadata:
