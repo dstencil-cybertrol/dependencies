@@ -1,5 +1,5 @@
 cert-manager:
-  enabled: true
+  enabled: false
   namespace: cert-manager
   installCRDs: true
   # Example configuration to specify recursive nameservers only.
@@ -50,7 +50,7 @@ cilium:
   bpf:
     masqerade: true
   hubble:
-    enabled: true
+    enabled: false
     metrics:
       enabled:
         - flow
@@ -60,9 +60,9 @@ cilium:
         - http
         - drop
     ui:
-      enabled: true
+      enabled: false
     relay:
-      enabled: true
+      enabled: false
 
 coredns:
   enabled: true
@@ -108,7 +108,7 @@ flux:
   enabled: true
 
 ingress-nginx:
-  enabled: true
+  enabled: false
   controller:
     kind: DaemonSet
     ingressClassResource:
@@ -127,7 +127,7 @@ ingress-nginx:
     selector: "app.kubernetes.io/name: ingress-nginx"
 
 longhorn:
-  enabled: true
+  enabled: false
   namespaceOverride: "longhorn-system"
 
 metallb:
@@ -140,7 +140,7 @@ sealed-secrets:
   enabled: true
 
 system-upgrade-controller:
-  enabled: true
+  enabled: false
   k3s:
     enabled: true
     version: v1.24.3+k3s1
