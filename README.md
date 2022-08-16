@@ -19,7 +19,7 @@ This helm chart requires being installed in two stages, as dependencies for some
 
 ```bash
 helm repo add dependencies https://cybertrol-engineering.github.io/dependencies/
-helm upgrade --install dependencies dependencies/dependencies --version "version to install" --namespace=kube-system --set metallb.addresses={"your metallb ip address or range"}
+helm upgrade --install dependencies dependencies/dependencies --namespace=kube-system --version "version to install"
 ```
 
 ## Updating components
