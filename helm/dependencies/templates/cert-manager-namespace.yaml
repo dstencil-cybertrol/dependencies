@@ -1,4 +1,4 @@
-{{- if index .Values "cert-manager" "enabled" }}
+{{- if or (index .Values "cert-manager" "enabled") (index .Values "cert-manager" "issuer" "enabled") }}
 apiVersion: v1
 kind: Namespace
 metadata:
