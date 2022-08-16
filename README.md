@@ -24,6 +24,15 @@ helm upgrade --install dependencies dependencies/dependencies --version "version
 
 ## Updating components
 
+First update the versions in helm/dependencies/Chart.yaml and then run: 
+
+```bash
+helm repo update
+helm dependency update helm/dependencies
+```
+
+This will update the repos and then pull the charts matching the pinned versions.
+
 ### metallb
 
 When updating metallb, the operator manifest can be found from tagged versions [here.](https://github.com/metallb/metallb-operator/blob/v0.13.4/bin/metallb-operator.yaml)
@@ -34,7 +43,7 @@ Select the correct tag from the dropdown.
 
 Flux installation manifests can be updated by updating your flux cli and running `flux install --export`
 
-Proxy information is added to the manager container in the source-controller deployment.
+Proxy information is optionally added to the manager container in the source-controller deployment.
 
 ```
         {{- if .Values.flux.proxy.enabled }}
@@ -45,3 +54,10 @@ Proxy information is added to the manager container in the source-controller dep
         {{- end }}
 ```
 
+### cert-manager
+
+Cert manager CRDs need to be updated in helm/dependencies/crds when updating the version of cert-manager.
+
+cert-manager CRDs can be found [here.](https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.crds.yaml)
+
+Select the correct tag from the dropdown at the top for the version of cert-manager in this chart.
