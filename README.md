@@ -60,4 +60,4 @@ Cert manager CRDs need to be updated in helm/dependencies/crds when updating the
 
 cert-manager CRDs can be found [here.](https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.crds.yaml)
 
-Select the correct tag from the dropdown at the top for the version of cert-manager in this chart.
+Select the correct version in the url for the version of cert-manager in this chart.
