@@ -1,7 +1,6 @@
 cert-manager:
   enabled: false
   namespace: cert-manager
-  installCRDs: true
   # Example configuration to specify recursive nameservers only.
   # extraArgs:
   # - --dns01-recursive-nameservers-only
