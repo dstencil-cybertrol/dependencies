@@ -67,8 +67,8 @@ cilium:
 coredns:
   fullnameOverride: coredns
   enabled: true
-  deployment:
-  name: coredns
+  deployment: 
+    name: coredns
   service:
     clusterIP: 100.65.0.10
   replicaCount: 3
