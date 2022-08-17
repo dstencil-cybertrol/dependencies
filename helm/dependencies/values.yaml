@@ -29,7 +29,10 @@ cert-manager:
 
 cilium:
   enabled: true
-  ipam.mode: kubernetes
+  ipam:
+    operator:
+      clusterPoolIPv4PodCIDRList:
+      - 100.64.0.0/16
   kubeProxyReplacement: strict
   k8sServiceHost: 127.0.0.1
   k8sServicePort: 6443
