@@ -1,6 +1,7 @@
 cert-manager:
   enabled: false
   namespace: cert-manager
+  fullnameOverride: cert-manager
   # Example configuration to specify recursive nameservers only.
   # extraArgs:
   # - --dns01-recursive-nameservers-only
