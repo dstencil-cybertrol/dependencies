@@ -116,6 +116,7 @@ flux:
 
 ingress-nginx:
   enabled: false
+  fullnameOverride: ingress-nginx
   controller:
     kind: DaemonSet
     ingressClassResource:
