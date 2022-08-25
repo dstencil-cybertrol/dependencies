@@ -16,6 +16,7 @@ cert-manager:
     secrets:
       dnsSecretAccessKey: ""
       acmeExternalAccountKey: ""
+    skipNamespace: false
     email: ""
     # LetsEncrypt ACME staging is used by default. To use for production, change the url to:
     # https://acme-v02.api.letsencrypt.org/directory
