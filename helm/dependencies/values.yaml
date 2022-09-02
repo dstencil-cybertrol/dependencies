@@ -43,7 +43,7 @@ cilium:
   nonMasqueradeCIDRs:
   - 100.64.0.0/16
   - 100.65.0.0/16
-  loadbalancer:
+  loadBalancer:
     mode: hybrid
   l7Proxy: false
   installIptablesRules: true
