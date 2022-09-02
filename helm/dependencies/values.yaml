@@ -45,6 +45,7 @@ cilium:
   - 100.65.0.0/16
   loadBalancer:
     mode: hybrid
+    serviceTopology: true
   l7Proxy: false
   installIptablesRules: true
   cgroup:
