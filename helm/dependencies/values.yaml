@@ -28,7 +28,7 @@ cert-manager:
     route53Region: us-east-1
     route53HostedZoneId: ""
     route53AccessKeyId: ""
-
+# Documentation for the cilium helm chart can be found here: https://docs.cilium.io/en/latest/helm-reference/
 cilium:
   enabled: true
   ipam:
@@ -43,7 +43,8 @@ cilium:
   nonMasqueradeCIDRs:
   - 100.64.0.0/16
   - 100.65.0.0/16
-  loadbalancer.mode: dsr
+  loadbalancer:
+    mode: hybrid
   l7Proxy: false
   installIptablesRules: true
   cgroup:
@@ -67,7 +68,7 @@ cilium:
       enabled: false
     relay:
       enabled: false
-
+# Documentation for the coredns helm chart can be found here: https://github.com/coredns/helm
 coredns:
   fullnameOverride: coredns
   enabled: true
