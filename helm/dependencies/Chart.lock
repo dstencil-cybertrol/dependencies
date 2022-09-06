@@ -10,12 +10,12 @@ dependencies:
   version: 1.19.4
 - name: ingress-nginx
   repository: https://kubernetes.github.io/ingress-nginx
-  version: 4.2.1
+  version: 4.2.5
 - name: longhorn
   repository: https://charts.longhorn.io
   version: 1.3.1
 - name: sealed-secrets
   repository: https://bitnami-labs.github.io/sealed-secrets
-  version: 2.6.0
-digest: sha256:3d9187eb4182a2cb6d826c69e96813e8c73fbc824bdc05b8ed3e02f863cedc5e
-generated: "2022-08-17T11:40:11.632558-05:00"
+  version: 2.6.1
+digest: sha256:e70934e4eca7c9fcd5ade21e297475b058716cf44901d68ba2f0f10b93d94f69
+generated: "2022-09-06T14:37:01.656738-05:00"
