@@ -16,7 +16,7 @@ spec:
     externalAccountBinding:
       keyID: {{ index .Values "cert-manager" "issuer" "acmeExternalAccountKeyId" }} 
       keySecretRef:
-        name: cert-manager-external-account-key
+        name: {{ printf "%s-external-account-key" (index .Values "cert-manager" "issuer" "name") }}
         key: acme_external_account_key
     {{- end }}
     privateKeySecretRef:
@@ -29,7 +29,7 @@ spec:
             region: {{ index .Values "cert-manager" "issuer" "route53Region" }}
             accessKeyID: {{ index .Values "cert-manager" "issuer" "route53AccessKeyId" }}
             secretAccessKeySecretRef:
-              name: cert-manager-dns01-key
+              name: {{ printf "%s-dns01-key" (index .Values "cert-manager" "issuer" "name") }}
               key: secret_access_key
             {{- if ne (index .Values "cert-manager" "issuer" "route53HostedZoneId") "" }}
             hostedZoneID: {{ index .Values "cert-manager" "issuer" "route53HostedZoneId" }}
@@ -39,7 +39,7 @@ spec:
           cloudflare:
             email: {{ index .Values "cert-manager" "issuer" "email" }}
             apiTokenSecretRef:
-              name: cert-manager-dns01-key
+              name: {{ printf "%s-dns01-key" (index .Values "cert-manager" "issuer" "name") }}
               key: secret_access_key
           {{- end }}
 {{- end }}
