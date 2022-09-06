@@ -2,7 +2,7 @@
 apiVersion: cert-manager.io/v1
 kind: {{ index .Values "cert-manager" "issuer" "kind" }}
 metadata:
-  name: "cert-manager"
+  name: {{ index .Values "cert-manager" "issuer" "name" }}
   {{- if ne (index .Values "cert-manager" "issuer" "namespaceOverride") "" }}
   namespace: {{ index .Values "cert-manager" "issuer" "namespaceOverride" | quote }}
   {{- else }}
