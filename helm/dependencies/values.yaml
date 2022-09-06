@@ -46,6 +46,10 @@ cilium:
   loadBalancer:
     mode: hybrid
     serviceTopology: true
+  tunnel:
+    disabled
+  ipv4NativeRoutingCIDR: 100.64.0.0/15
+  autoDirectNodeRoutes: true
   l7Proxy: false
   installIptablesRules: true
   cgroup:
