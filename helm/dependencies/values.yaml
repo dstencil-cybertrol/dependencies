@@ -161,6 +161,6 @@ system-upgrade-controller:
   enabled: false
   k3s:
     enabled: true
-    version: v1.24.3+k3s1
+    version: v1.24.4+k3s1
   ubuntu:
     enabled: true
