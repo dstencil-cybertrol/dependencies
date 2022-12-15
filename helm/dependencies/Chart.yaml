@@ -5,7 +5,7 @@ description: Helm chart for common k8s dependencies.
 type: application
 home: https://github.com/dstencil-cybertrol/dependencies
 sources:
-  - https://github.com/dstencil-cybertro/dependencies
+  - https://github.com/dstencil-cybertrol/dependencies
 maintainers:
   - name: alphabet5
     url: https://github.com/alphabet5
