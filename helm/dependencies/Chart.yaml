@@ -7,10 +7,10 @@ home: https://github.com/dstencil-cybertrol/dependencies
 sources:
   - https://github.com/dstencil-cybertrol/dependencies
 maintainers:
-  - name: alphabet5
-    url: https://github.com/alphabet5
+  - name: dstencil-cybertrol
+    url: https://github.com/dstencil-cybertrol
   - name: cybertrol-engineering
-    url: https://github.com/cybertrol-engineering
+    url: https://github.com/dstencil-cybertrol
 deprecated: false
 dependencies:
 - name: cert-manager
